@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=6.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "portobello"
+version = "0.0.1"
+description = "Python package for various helpful CLI utilities."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Cameron Fazakerley", email = "moose@nommumail.co.uk" }
+]
+requires-python = ">=3.8"
+dependencies = [
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GPL-3",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/nommu-moose/portobello"
+"Bug Tracker" = "https://github.com/nommu-moose/portobello/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+your_command = "portobello.cli:main"
