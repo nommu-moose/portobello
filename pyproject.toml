@@ -32,10 +32,16 @@ portobello = "portobello.cli:main"
 pbo = "portobello.cli:main"
 
 [tool.hatch.version]
-path = "src/portobello/__init__.py"  # Adjust this path to where your __version__ variable is
+path = "src/portobello/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 include = ["src/**/*"]
 
 [tool.hatch.build.targets.wheel]
 include = ["src/**/*"]
+
+[tool.hatch.metadata]
+dynamic = ["version"]
+
+[tool.hatch.envs.default]
+sources = ["src"]
