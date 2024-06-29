@@ -32,9 +32,9 @@ def main():
         'help': cli_help,
         'config': edit_config
     }[cli_strings[0]](cli_strings[1:], portobello_config)
-
-    saveable_clarg_str = f"{' '.join(['pbo', cli_strings[0]] +
-                                     [f'"{arg}"' if ' ' in arg else arg for arg in listed_clargs])}"
+    
+    saveable_clargs = ['pbo', cli_strings[0]] + [f'"{arg}"' if ' ' in arg else arg for arg in listed_clargs]
+    saveable_clarg_str = f"{' '.join(saveable_clargs)}"
 
     print(f"The complete command line for future reuse is: \n{saveable_clarg_str}")
     if saveable_clarg_str not in portobello_config['saved_commands'] and \
