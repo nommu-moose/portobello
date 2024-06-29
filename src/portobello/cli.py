@@ -1,8 +1,8 @@
 import os
 import psutil
 
-from internal.utils import split_quoted_string, load_portobello_config, save_portobello_config
-from netstat.main import main as netstat_main
+from portobello.internal.utils import split_quoted_string, load_portobello_config, save_portobello_config
+from portobello.netstat.main import main as netstat_main
 
 
 def ldap(cli_strings):

@@ -1,7 +1,7 @@
 import re
 from ldap3 import Server, Connection, ALL, ALL_ATTRIBUTES
 
-from ..internal.utils import manual_debug_log
+from portobello.internal.utils import manual_debug_log
 
 
 def str_from_obj(obj, attr_lst):
