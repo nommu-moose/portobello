@@ -21,20 +21,20 @@ def main(cli_strings: list, portobello_config: dict):
             saved_hostname_strings = [f"[{index}]: {hostname}" for index, hostname in enumerate(saved_hostnames)]
             print(f"Saved hostnames are: \n{newline.join(saved_hostname_strings)}\n\n"
                   "To choose one of these, start with a # and type its reference number.")
-        hostname = input('Please enter a hostname:')
+        hostname = input('Please enter a hostname:\n')
     if hostname[0] == '#':
         ind = int(hostname[1:])
         if not ind < len(saved_hostnames):
             raise IndexError("You're attempting to use a saved hostname that does not exist.")
         hostname = saved_hostnames[ind]
-    else:
+    elif hostname not in portobello_config['netstat']['hostnames']:
         if input('Do you want to save this hostname for the future? Type y for yes.') == 'y':
             portobello_config['netstat']['hostnames'].append(hostname)
 
     if len(cli_strings) >= 2:
         port_number = int(cli_strings[1])
     else:
-        port_number = int(input('Please enter a port number to check.'))
+        port_number = int(input('Please enter a port number to check:\n'))
 
     print(f"####\nThe port you checked is{[' not', ''][check_port(hostname, port_number)]} open.\n####\n")
     return [hostname, str(port_number)]
