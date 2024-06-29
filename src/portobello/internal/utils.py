@@ -187,6 +187,10 @@ def manual_debug_log(*args, **kwargs):
 ###################
 
 
+def edit_config(_):
+    open_editor(PORTOBELLO_CONFIG_PATH)
+
+
 def get_default_editor():
     """
     Determine the default text editor to use based.
@@ -207,6 +211,11 @@ def open_editor(file_path):
     editor = get_default_editor()
 
     subprocess.call([editor, file_path])
+
+
+###################
+#  Command  Line  #
+###################
 
 
 def split_quoted_string(input_string):

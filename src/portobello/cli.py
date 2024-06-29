@@ -1,7 +1,7 @@
 import os
 import psutil
 
-from portobello.internal.utils import split_quoted_string, load_portobello_config, save_portobello_config
+from portobello.internal.utils import split_quoted_string, load_portobello_config, save_portobello_config, edit_config
 from portobello.netstat.main import main as netstat_main
 
 
@@ -10,10 +10,6 @@ def ldap(cli_strings):
 
 
 def cli_help(cli_strings):
-    pass
-
-
-def edit_config(cli_strings):
     pass
 
 
