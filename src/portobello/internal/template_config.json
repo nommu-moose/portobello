@@ -2,9 +2,9 @@
   "ldap":{
     "bind_users": [
       {"bind_user": "", "kp_search_string": ""}
-        ],
-        "servers": [
-        ],
+    ],
+    "servers": [
+    ],
     "saved_queries": [
     ],
     "saved_domains": [
