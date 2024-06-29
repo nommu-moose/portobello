@@ -1,10 +1,9 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=6.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "portobello"
-version = "0.0.1"
 description = "Python package for various helpful CLI utilities."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -27,8 +26,14 @@ classifiers = [
 "Homepage" = "https://github.com/nommu-moose/portobello"
 "Bug Tracker" = "https://github.com/nommu-moose/portobello/issues"
 
-[tool.setuptools.packages.find]
-where = ["src"]
-
 [project.scripts]
 your_command = "portobello.cli:main"
+
+[tool.hatch.version]
+path = "src/portobello/__init__.py"  # Adjust this path to where your __version__ variable is
+
+[tool.hatch.build.targets.sdist]
+include = ["src/**/*"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src/**/*"]
