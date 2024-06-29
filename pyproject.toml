@@ -21,6 +21,7 @@ classifiers = [
     "License :: OSI Approved :: GPL-3",
     "Operating System :: OS Independent"
 ]
+dynamic = ["version"]
 
 [project.urls]
 "Homepage" = "https://github.com/nommu-moose/portobello"
