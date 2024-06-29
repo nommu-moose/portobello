@@ -39,7 +39,7 @@ def save_portobello_config(config):
 
 def save_backup(json_data, directory_path, n):
     if not directory_path.exists():
-        directory_path.mkdir(exist_ok=True)
+        directory_path.mkdir(exist_ok=True, parents=True)
     pattern = re.compile(r'^\d{12}_config_backup\.json$')
 
     matched_files = []
@@ -106,7 +106,7 @@ def save_json(path, json_data, raise_exception=True):
 
 def standardise_portobello_config(template_config):
     if not PORTOBELLO_CONFIG_PATH.exists():
-        PORTOBELLO_CONFIG_PATH.parent.mkdir(exist_ok=True)
+        PORTOBELLO_CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
         portobello_config = {}
     else:
         portobello_config = load_json(PORTOBELLO_CONFIG_PATH)
