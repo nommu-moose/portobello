@@ -1,5 +1,5 @@
 import re
-from ldap3 import Server, Connection, ALL, ALL_ATTRIBUTES
+from ldap3 import Server, Connection, ALL, ALL_ATTRIBUTES, NTLM
 
 from portobello.internal.utils import manual_debug_log
 from getpass import getpass
@@ -67,7 +67,7 @@ def ldap_connect(uri, bind_user):
         server,
         bind_dn,
         bind_pw,
-        auto_bind='DEFAULT',
+        authentication=NTLM,
         auto_referrals=True,
         auto_encode=True,
         auto_escape=True
