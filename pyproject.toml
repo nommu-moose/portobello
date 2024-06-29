@@ -36,11 +36,11 @@ path = "src/portobello/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 include = ["src/portobello"]
-packages = { include = ["portobello"], src = "src" }
+packages = ["portobello"]
 
 [tool.hatch.build.targets.wheel]
 include = ["src/portobello"]
-packages = { include = ["portobello"], src = "src" }
+packages = ["portobello"]
 
 
 [tool.hatch.metadata]
