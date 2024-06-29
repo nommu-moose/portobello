@@ -188,7 +188,7 @@ def manual_debug_log(*args, **kwargs):
 
 
 def edit_config(_, portobello_config):
-    open_editor(PORTOBELLO_CONFIG_PATH)
+    return open_editor(PORTOBELLO_CONFIG_PATH)
 
 
 def get_default_editor():
