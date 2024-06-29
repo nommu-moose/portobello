@@ -161,7 +161,7 @@ def windows_get_local_appdata_path():
 
 
 def linux_get_data_dir():
-    return Path(os.getenv('XDG_DATA_HOME', Path('~/.local/share/portobello/').expanduser))
+    return Path(os.getenv('XDG_DATA_HOME', Path('~/.local/share/portobello/').expanduser()))
 
 
 def manual_debug_log(*args, **kwargs):
