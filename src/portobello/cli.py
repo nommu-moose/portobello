@@ -28,6 +28,7 @@ def main():
     current_process = psutil.Process(current_pid)
     cli_string = ' '.join(current_process.cmdline())
     cli_strings = split_quoted_string(cli_string)
+
     {
         'ldap': ldap,
         'netstat': netstat_main,
@@ -37,6 +38,3 @@ def main():
     }[cli_strings[0]](cli_strings[1:], portobello_config)
 
     save_portobello_config(portobello_config)
-
-
-main()
