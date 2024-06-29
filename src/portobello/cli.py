@@ -41,5 +41,3 @@ def main():
     }[cli_strings[0]](cli_strings[1:], portobello_config)
 
     save_portobello_config(portobello_config)
-
-main()
