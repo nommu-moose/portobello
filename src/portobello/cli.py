@@ -28,7 +28,7 @@ def main():
     current_process = psutil.Process(current_pid)
     cli_string = ' '.join(current_process.cmdline())
     cli_strings = split_quoted_string(cli_string)
-
+    print(cli_string)
     {
         'ldap': ldap,
         'netstat': netstat_main,
