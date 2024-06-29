@@ -35,12 +35,13 @@ pbo = "portobello.cli:main"
 path = "src/portobello/__init__.py"
 
 [tool.hatch.build.targets.sdist]
-include = ["src"]
-packages = ["portobello"]
+include = ["src/portobello"]
+packages = { include = ["portobello"], src = "src" }
 
 [tool.hatch.build.targets.wheel]
-include = ["src"]
-packages = ["portobello"]
+include = ["src/portobello"]
+packages = { include = ["portobello"], src = "src" }
+
 
 [tool.hatch.metadata]
 dynamic = ["version"]
