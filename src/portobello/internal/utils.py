@@ -67,7 +67,7 @@ def pw_from_keepass(search_string: str, fp: Path = None, pw: str = None):
 
 def load_portobello_config():
     template_config = load_template_config()
-    config = standardise_portobello_config(PORTOBELLO_CONFIG_PATH, template_config)
+    config = standardise_portobello_config(template_config)
     return config
 
 
