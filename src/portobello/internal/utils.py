@@ -32,15 +32,42 @@ class JsonSaveError(Exception):
     pass
 
 
+def save_portobello_config(config):
+    save_json(PORTOBELLO_CONFIG_PATH, config)
+    save_backup(config, Path(PORTOBELLO_CONFIG_PATH.parent, 'backups'), 25)
+
+
+def save_backup(json_data, directory_path, n):
+    if not directory_path.exists():
+        directory_path.mkdir(exist_ok=True)
+    pattern = re.compile(r'^\d{12}_config_backup\.json$')
+
+    matched_files = []
+
+    for filename in os.listdir(directory_path):
+        if pattern.match(filename):
+            matched_files.append(filename)
+
+    if len(matched_files) > n:
+        matched_files.sort()
+
+        oldest_file = matched_files[0]
+
+        os.remove(os.path.join(directory_path, oldest_file))
+        print(f"Deleted the oldest backup file: {oldest_file}")
+
+    backup_path_now = Path(directory_path, f"{datetime.now().strftime('%y%m%d%H%M%S')}_config_backup.json")
+    save_json(backup_path_now, json_data)
+
+
 def pw_from_keepass(search_string: str, fp: Path = None, pw: str = None):
     kp = PyKeePass(fp, password=pw)
     return kp.find_entries(title=search_string, first=True).password
 
 
 def load_portobello_config():
-    path = Path(get_portobello_data_path(), 'conf.json')
     template_config = load_template_config()
-    config = standardise_portobello_config(path, template_config)
+    config = standardise_portobello_config(PORTOBELLO_CONFIG_PATH, template_config)
     return config
 
 
@@ -77,10 +104,10 @@ def save_json(path, json_data, raise_exception=True):
             print(error_txt)
 
 
-def standardise_portobello_config(path, template_config):
-    portobello_config = load_json(path)
+def standardise_portobello_config(template_config):
+    portobello_config = load_json(PORTOBELLO_CONFIG_PATH)
     standardised_portobello_config = combine_config_fields(portobello_config, template_config)
-    save_json(path, standardised_portobello_config)
+    save_json(PORTOBELLO_CONFIG_PATH, standardised_portobello_config)
     return standardised_portobello_config
 
 
@@ -198,3 +225,6 @@ def split_quoted_string(input_string):
         result.append(next(item for item in match if item))
 
     return result
+
+
+PORTOBELLO_CONFIG_PATH = Path(get_portobello_data_path(), 'conf.json')

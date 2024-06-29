@@ -1,20 +1,19 @@
 import os
 import psutil
 
+from internal.utils import split_quoted_string, load_portobello_config, save_portobello_config
+from netstat.main import main as netstat_main
 
-def ldap():
+
+def ldap(cli_strings):
     pass
 
 
-def netstat():
+def cli_help(cli_strings):
     pass
 
 
-def cli_help():
-    pass
-
-
-def edit_config():
+def edit_config(cli_strings):
     pass
 
 
@@ -24,11 +23,20 @@ def main():
     give list of ldap, netstat, help, or config
     :return:
     """
+    portobello_config = load_portobello_config()
     current_pid = os.getpid()
     current_process = psutil.Process(current_pid)
-    command_line = ' '.join(current_process.cmdline())
-    print("Full command-line invocation string:")
-    print(command_line)
+    cli_string = ' '.join(current_process.cmdline())
+    cli_strings = split_quoted_string(cli_string)
+    {
+        'ldap': ldap,
+        'netstat': netstat_main,
+        'ns': netstat_main,
+        'help': cli_help,
+        'config': edit_config
+    }[cli_strings[0]](cli_strings[1:], portobello_config)
+
+    save_portobello_config(portobello_config)
 
 
 main()

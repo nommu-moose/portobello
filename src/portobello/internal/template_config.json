@@ -10,5 +10,9 @@
     "saved_domains": [
     ]
   },
+  "netstat": {
+    "hostnames": [],
+    "ports": []
+  },
   "keepass_location": ""
 }
