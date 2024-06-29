@@ -13,6 +13,9 @@ authors = [
 ]
 requires-python = ">=3.8"
 dependencies = [
+    "pykeepass",
+    "ldap3",
+    "psutil"
 ]
 classifiers = [
     "Programming Language :: Python :: 3",

@@ -15,7 +15,9 @@ pip install portobello
 
 ## Usage
 portobello/pobo netstat (follow instructions)
+
 portobello/pobo ldap (follow instructions)
+
 portobello/pobo help
 
 ## Contributing
