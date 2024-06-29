@@ -42,6 +42,11 @@ packages = ["portobello"]
 include = ["src/portobello"]
 packages = ["portobello"]
 
-
 [tool.hatch.metadata]
 dynamic = ["version"]
+
+[tool.hatch.build]
+package-dir = "src"
+
+[tool.hatch.envs.default]
+sources = ["src"]
