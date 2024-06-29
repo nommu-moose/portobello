@@ -54,7 +54,7 @@ def save_backup(json_data, directory_path, n):
         oldest_file = matched_files[0]
 
         os.remove(os.path.join(directory_path, oldest_file))
-        print(f"Deleted the oldest backup file: {oldest_file}")
+        # for later logging print(f"Deleted the oldest backup file: {oldest_file}")
 
     backup_path_now = Path(directory_path, f"{datetime.now().strftime('%y%m%d%H%M%S')}_config_backup.json")
     save_json(backup_path_now, json_data)
@@ -95,7 +95,7 @@ def save_json(path, json_data, raise_exception=True):
     try:
         with open(path, 'w') as json_file:
             json.dump(json_data, json_file, indent=2)
-        print(f"Configuration saved successfully to {path}")
+        # for later logging print(f"Configuration saved successfully to {path}")
     except IOError as e:
         error_txt = f"An error occurred while writing to the file: {e}"
         if raise_exception:
@@ -211,6 +211,8 @@ def open_editor(file_path):
     editor = get_default_editor()
 
     subprocess.call([editor, file_path])
+
+    return []
 
 
 ###################

@@ -26,14 +26,17 @@ def main():
     print(cli_string)
     cli_strings = split_quoted_string(cli_string)[2:]
     if not cli_strings:
-        question_text = "Would you like to use: \nldap\nnetstat\nns (short name for netstat)\nhelp\nconfig (edit)"
+        question_text = "Would you like to use: \nldap\nnetstat\nns (short name for netstat)\nhelp\nconfig (edit)\n"
         cli_strings = [input(question_text)]
-    {
+    listed_clargs = {
         'ldap': ldap,
         'netstat': netstat_main,
         'ns': netstat_main,
         'help': cli_help,
         'config': edit_config
     }[cli_strings[0]](cli_strings[1:], portobello_config)
+
+    saveable_clarg_str = f"{' '.join(['pbo', cli_strings[0]] + listed_clargs)}"
+    print(f"The complete command line for future reuse is: \n {saveable_clarg_str}")
 
     save_portobello_config(portobello_config)

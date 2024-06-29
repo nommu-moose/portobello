@@ -36,7 +36,5 @@ def main(cli_strings: list, portobello_config: dict):
     else:
         port_number = int(input('Please enter a port number to check.'))
 
-    print(f"The port you checked is{[' not', ''][check_port(hostname, port_number)]} open.")
-    print(f"The complete command line for future reuse is: "
-          f"{' '.join(['portobello', 'netstat', hostname, str(port_number)])}")
-    return 'pbo', 'ns', hostname, str(port_number)
+    print(f"####\nThe port you checked is{[' not', ''][check_port(hostname, port_number)]} open.\n####\n")
+    return [hostname, str(port_number)]
