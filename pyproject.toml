@@ -38,10 +38,10 @@ path = "src/portobello/__init__.py"
 package-dir = "src"
 
 [tool.hatch.build.targets.sdist]
-include = ["src/**/*"]
+include = ["src/portobello/*"]
 
 [tool.hatch.build.targets.wheel]
-include = ["src/**/*"]
+include = ["src/portobello/*"]
 
 [tool.hatch.metadata]
 dynamic = ["version"]
