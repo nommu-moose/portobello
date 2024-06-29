@@ -105,7 +105,10 @@ def save_json(path, json_data, raise_exception=True):
 
 
 def standardise_portobello_config(template_config):
-    portobello_config = load_json(PORTOBELLO_CONFIG_PATH)
+    if not PORTOBELLO_CONFIG_PATH.exists():
+        PORTOBELLO_CONFIG_PATH.parent.mkdir(exist_ok=True)
+    else:
+        portobello_config = load_json(PORTOBELLO_CONFIG_PATH)
     standardised_portobello_config = combine_config_fields(portobello_config, template_config)
     save_json(PORTOBELLO_CONFIG_PATH, standardised_portobello_config)
     return standardised_portobello_config
