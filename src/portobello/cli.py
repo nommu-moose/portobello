@@ -27,8 +27,9 @@ def main():
     current_pid = os.getpid()
     current_process = psutil.Process(current_pid)
     cli_string = ' '.join(current_process.cmdline())
-    cli_strings = split_quoted_string(cli_string)
-    print(cli_string)
+    cli_strings = split_quoted_string(cli_string)[2:]
+    if not cli_strings:
+        cli_strings = input("Would you like to use: \nldap\nnetstat\nns (short name for netstat)\nhelp\nconfig (edit)")
     {
         'ldap': ldap,
         'netstat': netstat_main,
