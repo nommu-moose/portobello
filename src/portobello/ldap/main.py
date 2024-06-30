@@ -29,7 +29,8 @@ def get_bind_user_password(cli_strings, bind_user, portobello_config):
         user_input = input("Type 'k' if you want to use the keepass, p for directly supplying password:\n")
     if user_input == 'k':
         kp_password = getpass("Please enter the keepass password:\n")
-        bind_user.get('kp_search_string', input("Please enter users keepass search string:\n"))
+        kp_search_string = bind_user.get('kp_search_string', input("Please enter users keepass search string:\n"))
+        bind_user['kp_search_string'] = kp_search_string
         pw = pw_from_keepass(bind_user['kp_search_string'], Path(portobello_config['keepass_location']), kp_password)
     elif user_input == 'p':
         pw = getpass("Please enter the bind user password:\n")
