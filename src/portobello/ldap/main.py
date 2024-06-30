@@ -1,35 +1,41 @@
 import re
+from pathlib import Path
+
 from ldap3 import Server, Connection, ALL, ALL_ATTRIBUTES, NTLM
 
-from portobello.internal.utils import manual_debug_log
+from portobello.internal.utils import manual_debug_log, pw_from_keepass, ask_for_input_or_list_choice, \
+    ImproperSelectionError
 from getpass import getpass
 
 
 def main(cli_strings, portobello_config):
-    print(f"If your bind user is listed here, please use its reference number:")
-
-    newline = '\n'
     saved_bind_users = portobello_config['ldap']['bind_users']
-    saved_bind_user_strings = [f"[{index}]: {bind_user}" for index, bind_user in enumerate(saved_bind_users)]
-    print(f"Saved bind users are: \n{newline.join(saved_bind_user_strings)}\n\n"
-          "To choose one of these, start with a # and type its reference number.")
-    bind_user = input(f"Please enter a bind_user:\n")
-    if bind_user[0] == '#':
-        ind = int(bind_user[1:])
-        bind_user = saved_bind_users[ind]
-    else:
-        bind_user = {'bind_user': bind_user, 'kp_search_string': input("Please enter users keepass search string:\n")}
-    password = getpass("Please enter the keepass password:\n")
-    bind_user['password'] = password
+    bind_user = ask_for_input_or_list_choice(saved_bind_users, 'bind user', 'bind users', cli_strings=cli_strings)
+    if type(bind_user) is str:
+        bind_user = {'bind_user': bind_user}
+
+    pw = get_bind_user_password(cli_strings, bind_user, portobello_config)
+
     server_uri = input("Please input the server uri:\n")
-    conn = ldap_connect(server_uri, bind_user)
-    print("Connection has bound?: ", bool(conn.bind()))
+    conn = ldap_connect(server_uri, bind_user, pw)
+    print(f"Connection has{[' not', ''][bool(conn.bind())]} bound successfully. ")
+    return []
 
 
-def deliver_request_for_entry(var_name, readable_name, portobello_config):
-    # if portobello_config['ldap'][var_name]
-    # input(f"Please enter ")
-    pass
+def get_bind_user_password(cli_strings, bind_user, portobello_config):
+    if len(cli_strings) >= 2:
+        user_input = cli_strings[1]
+    else:
+        user_input = input("Type 'k' if you want to use the keepass, p for directly supplying password:\n")
+    if user_input == 'k':
+        kp_password = getpass("Please enter the keepass password:\n")
+        bind_user.get('kp_search_string', input("Please enter users keepass search string:\n"))
+        pw = pw_from_keepass(bind_user['kp_search_string'], Path(portobello_config['keepass_location']), kp_password)
+    elif user_input == 'p':
+        pw = getpass("Please enter the bind user password:\n")
+    else:
+        raise ImproperSelectionError("Please only type k or p.")
+    return pw
 
 
 def str_from_obj(obj, attr_lst):
@@ -59,9 +65,8 @@ def expand_out_args(args, keys):
         setattr(args, key, lst)
 
 
-def ldap_connect(uri, bind_user):
+def ldap_connect(uri, bind_user, bind_pw):
     bind_dn = bind_user['bind_user']
-    bind_pw = bind_user['password']
     server = Server(uri, get_info=ALL, allowed_referral_hosts=[('*', True)])
     conn = Connection(
         server,

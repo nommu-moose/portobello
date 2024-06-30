@@ -6,8 +6,8 @@ from portobello.netstat.main import main as netstat_main
 from portobello.ldap.main import main as ldap_main
 
 
-def cli_help(cli_strings):
-    pass
+def cli_help(_):
+    print('This is the most ridiculously simple cli tool, what on Earth would you need help with?')
 
 
 def main():

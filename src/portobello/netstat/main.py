@@ -1,5 +1,7 @@
 import socket
 
+from portobello.internal.utils import ask_for_input_or_list_choice
+
 
 def check_port(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -12,24 +14,8 @@ def check_port(host, port):
 
 
 def main(cli_strings: list, portobello_config: dict):
-    newline = '\n'
     saved_hostnames = portobello_config['netstat']['hostnames']
-    if len(cli_strings) >= 1:
-        hostname = cli_strings[0]
-    else:
-        if saved_hostnames:
-            saved_hostname_strings = [f"[{index}]: {hostname}" for index, hostname in enumerate(saved_hostnames)]
-            print(f"Saved hostnames are: \n{newline.join(saved_hostname_strings)}\n\n"
-                  "To choose one of these, start with a # and type its reference number.")
-        hostname = input('Please enter a hostname:\n')
-    if hostname[0] == '#':
-        ind = int(hostname[1:])
-        if not ind < len(saved_hostnames):
-            raise IndexError("You're attempting to use a saved hostname that does not exist.")
-        hostname = saved_hostnames[ind]
-    elif hostname not in portobello_config['netstat']['hostnames']:
-        if input('Do you want to save this hostname for the future? Type y for yes.') == 'y':
-            portobello_config['netstat']['hostnames'].append(hostname)
+    hostname = ask_for_input_or_list_choice(saved_hostnames, 'hostname', 'hostnames', cli_strings=cli_strings)
 
     if len(cli_strings) >= 2:
         port_number = int(cli_strings[1])
