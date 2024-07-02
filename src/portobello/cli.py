@@ -19,7 +19,8 @@ def main():
     portobello_config = load_portobello_config()
     current_pid = os.getpid()
     current_process = psutil.Process(current_pid)
-    cli_strings = ' '.join(current_process.cmdline())
+    cli_strings = current_process.cmdline()[2:]
+    # cli_strings = ' '.join(current_process.cmdline())
     # print(cli_string)
     # cli_strings = split_quoted_string(cli_string)[2:]
     if not cli_strings:
