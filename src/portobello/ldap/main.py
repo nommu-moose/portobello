@@ -11,7 +11,7 @@ from getpass import getpass
 def main(cli_strings, portobello_config):
     saved_bind_users = portobello_config['ldap']['bind_users']
     bind_user, return_clargs = ask_for_input_or_list_choice(saved_bind_users, 'bind user',
-                                                            'bind users', cli_strings=cli_strings)
+                                                            'bind users', cli_strings=cli_strings, dict_key='bind_user')
     if type(bind_user) is str:
         bind_user = {'bind_user': bind_user}
 

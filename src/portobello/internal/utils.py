@@ -70,7 +70,8 @@ def pw_from_keepass(search_string: str, fp: Path, pw: str):
 
 
 def ask_for_input_or_list_choice(lst: list, var_name: str, plural_var_name: str = None, cli_strings: list = None,
-                                 cli_ind: int = 0):
+                                 cli_ind: int = 0, dict_key=None):
+    # todo: support dicts
     clargs = []
     if cli_strings is None:
         user_input = None
@@ -93,13 +94,26 @@ def ask_for_input_or_list_choice(lst: list, var_name: str, plural_var_name: str 
         if not ind < len(lst):
             raise IndexError(f"You're attempting to use a saved {var_name} that does not exist.")
         user_input = lst[ind]
-    elif user_input not in lst:
+    elif not key_val_in_list(lst, dict_key, user_input):
         if len(cli_strings) >= cli_ind + 2:
             if cli_strings[cli_ind + 1] == 'y':
-                lst.append(cli_strings[cli_ind + 1])
+                lst.append(user_input)
+                clargs += ['y']
+            else:
+                clargs += ['n']
         elif input(f'Do you want to save this {var_name} for the future? Type y for yes.') == 'y':
             lst.append(user_input)
-    return user_input
+        clargs += ['n']
+    return user_input, clargs
+
+
+def key_val_in_list(iterable, key, val):
+    if key is None:
+        return val in iterable
+    for obj in iterable:
+        if obj.get(key, None) == val:
+            return True
+    return False
 
 
 def load_portobello_config():
