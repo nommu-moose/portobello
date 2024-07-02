@@ -118,8 +118,10 @@ def ldap_search(conn, portobello_config, cli_strings, attr_list='all'):
     log_name = domain_components + re.sub('[&()]', '', search_query)
     for entry in conn.entries:
         user_txt = str_from_obj(entry, attr_list)
-        output_txt += user_txt
+        output_txt += '\n\n\n' + user_txt
         manual_debug_log(user=user_txt, log_name=log_name, log_path=['ldap', 'output'])
+    print(output_txt)
+    return return_clargs
 
 
 def check_ldap_membership():
