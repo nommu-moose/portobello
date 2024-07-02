@@ -14,5 +14,7 @@
     "hostnames": [],
     "ports": []
   },
-  "keepass_location": ""
+  "keepass_location": "",
+  "saved_commands": [
+  ]
 }

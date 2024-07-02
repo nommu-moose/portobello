@@ -19,12 +19,13 @@ def main():
     portobello_config = load_portobello_config()
     current_pid = os.getpid()
     current_process = psutil.Process(current_pid)
-    cli_string = ' '.join(current_process.cmdline())
-    print(cli_string)
-    cli_strings = split_quoted_string(cli_string)[2:]
+    cli_strings = ' '.join(current_process.cmdline())
+    # print(cli_string)
+    # cli_strings = split_quoted_string(cli_string)[2:]
     if not cli_strings:
         question_text = "Would you like to use: \nldap\nnetstat\nns (short name for netstat)\nhelp\nconfig (edit)\n"
         cli_strings = [input(question_text)]
+
     listed_clargs = {
         'ldap': ldap_main,
         'netstat': netstat_main,

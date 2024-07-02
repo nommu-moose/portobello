@@ -69,29 +69,35 @@ def pw_from_keepass(search_string: str, fp: Path, pw: str):
     return kp.find_entries(title=search_string, first=True).password
 
 
-def ask_for_input_or_list_choice(lst: list, var_name: str, plural_var_name: str = None, cli_strings: list = None, cli_ind: int = 0):
+def ask_for_input_or_list_choice(lst: list, var_name: str, plural_var_name: str = None, cli_strings: list = None,
+                                 cli_ind: int = 0):
+    clargs = []
     if cli_strings is None:
         user_input = None
-    elif len(cli_strings) >= 1:
+    elif len(cli_strings) >= cli_ind + 1:
         user_input = cli_strings[cli_ind]
     else:
         user_input = None
     if plural_var_name is None:
         plural_var_name = var_name + 's'
     newline = '\n'
-    if lst and user_input is not None:
+    if lst and user_input is None:
         enumerated_string_list = [f"[{index}]: {hostname}" for index, hostname in enumerate(lst)]
         print(f"Saved {plural_var_name} are: \n{newline.join(enumerated_string_list)}\n\n"
               "To choose one of these, start with a # and type its reference number.")
     if user_input is None:
         user_input = input(f"Please enter a {var_name}: \n")
+    clargs += [user_input]
     if user_input[0] == '#':
         ind = int(user_input[1:])
         if not ind < len(lst):
             raise IndexError(f"You're attempting to use a saved {var_name} that does not exist.")
         user_input = lst[ind]
     elif user_input not in lst:
-        if input(f'Do you want to save this {var_name} for the future? Type y for yes.') == 'y':
+        if len(cli_strings) >= cli_ind + 2:
+            if cli_strings[cli_ind + 1] == 'y':
+                lst.append(cli_strings[cli_ind + 1])
+        elif input(f'Do you want to save this {var_name} for the future? Type y for yes.') == 'y':
             lst.append(user_input)
     return user_input
 

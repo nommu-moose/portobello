@@ -10,16 +10,32 @@ from getpass import getpass
 
 def main(cli_strings, portobello_config):
     saved_bind_users = portobello_config['ldap']['bind_users']
-    bind_user = ask_for_input_or_list_choice(saved_bind_users, 'bind user', 'bind users', cli_strings=cli_strings)
+    bind_user, return_clargs = ask_for_input_or_list_choice(saved_bind_users, 'bind user',
+                                                            'bind users', cli_strings=cli_strings)
     if type(bind_user) is str:
         bind_user = {'bind_user': bind_user}
 
     pw = get_bind_user_password(cli_strings, bind_user, portobello_config)
 
-    server_uri = input("Please input the server uri:\n")
+    server_uri, clargs = ask_for_input_or_list_choice([], 'server uri', 'server uris',
+                                                      cli_strings=cli_strings, cli_ind=2)
+    return_clargs += clargs
     conn = ldap_connect(server_uri, bind_user, pw)
     print(f"Connection has{[' not', ''][bool(conn.bind())]} bound successfully. ")
-    return []
+
+    if cli_strings >= 4:
+        user_input = cli_strings[3]
+    else:
+        user_input = input("Do you want to conduct an ldap search? y or n:\n")
+    if user_input == 'y':
+        return_clargs += ['y']
+
+    else:
+        return_clargs += ['n']
+
+    return_clargs = ldap_search(conn, portobello_config, cli_strings)
+
+    return return_clargs
 
 
 def get_bind_user_password(cli_strings, bind_user, portobello_config):
@@ -81,7 +97,17 @@ def ldap_connect(uri, bind_user, bind_pw):
     return conn
 
 
-def ldap_search(conn, domain_components, search_query, attr_list):
+def ldap_search(conn, portobello_config, cli_strings, attr_list='all'):
+    return_clargs = []
+    saved_dcs = portobello_config['ldap']['domain_components']
+    domain_components, clargs = ask_for_input_or_list_choice(saved_dcs, 'bind user', 'bind users',
+                                                             cli_strings=cli_strings, cli_ind=4)
+    return_clargs += clargs
+    saved_queries = portobello_config['ldap']['queries']
+    search_query, clargs = ask_for_input_or_list_choice(saved_queries, 'bind user', 'bind users',
+                                                        cli_strings=cli_strings, cli_ind=5)
+    return_clargs += clargs
+
     conn.search(
         domain_components,
         search_query,
@@ -89,20 +115,12 @@ def ldap_search(conn, domain_components, search_query, attr_list):
         attributes=ALL_ATTRIBUTES
     )
     output_txt = ''
-    log_name = re.sub('[&()]', '', search_query)
+    log_name = domain_components + re.sub('[&()]', '', search_query)
     for entry in conn.entries:
         user_txt = str_from_obj(entry, attr_list)
         output_txt += user_txt
         manual_debug_log(user=user_txt, log_name=log_name, log_path=['ldap', 'output'])
 
 
-def ldap_authenticate():
-    pass
-
-
 def check_ldap_membership():
-    pass
-
-
-def retrieve_ldap_attributes():
     pass
